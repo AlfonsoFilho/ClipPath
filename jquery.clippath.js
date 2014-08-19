@@ -50,9 +50,11 @@
 				// SVG
 				} else { 
 					// Create SVG tag
-					$("body").append('<svg width="0" height="0"><clipPath id="' + clipPathID + '"><polygon points="' + path + '"></polygon></clipPath></svg>');
+					$("body").append('<svg width="0" height="0"><clipPath id="' + clipPathID + '"><polygon points="' + path.replace(/px|%|em/g, '') + '"></polygon></clipPath></svg>');
 					// 
-					element.style.clipPath = 'url(#' + clipPathID + ')';
+					setTimeout(function () {
+						element.style.clipPath = 'url(#' + clipPathID + ')';
+					}, 0);
 
 				}
 
