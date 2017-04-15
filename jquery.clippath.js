@@ -1,44 +1,45 @@
 (function ($) {
-	
+
+	/**
+	 * Generate an unique identifier
+	 * @return {String}
+	 */
+	var getUniqueID = function () {
+		return Math.random().toString(36).substring(7);
+	},
+
+	/**
+	* Checks if css property clip-path supports "polygon()" attribute
+	* @return {Boolean} Return TRUE if browser has support
+	*/
+	var hasSupportToPolygon = (function () {
+		var $testEl   = $('<div></div>'),
+				testEl    = $testEl[0],
+				propValue = "polygon(0 0, 0 0, 0 0, 0 0)";
+
+		testEl.style.clipPath = propValue;
+
+		var result = testEl.style.clipPath === propValue;
+
+		$testEl.remove()
+
+		return result
+	})()
+
 	$.fn.ClipPath = function (options) {
 
 		var settings = $.extend({
 				path: null
-			}, options ),			
+			}, options );
 
-			/**
-			 * Generate an unique identifier
-			 * @return {String}
-			 */
-			getUniqueID = function () {
-				return  Math.random().toString(36).substring(7);
-			},
-
-			/**
-			 * Checks if css property clip-path supports "polygon()" attribute
-			 * @return {Boolean} Return TRUE if browser has support
-			 */
-			hasSupportToPolygon = (function () {
-				var testEl = $('<div></div>')[0],
-					propValue = "polygon(0 0, 0 0, 0 0, 0 0)";
-
-				testEl.style.clipPath = propValue;
-
-				return testEl.style.clipPath === propValue;
-			})();
-
-		
 		return this.each(function () {
-			
-			var $this = $(this),
-				path = $this.data('clip') || settings.path,
-				element = $this[0],
-				clipPathID = getUniqueID();
+
+			var element  = this,
+					path 		 = $element.data('clip') || settings.path;
 
 			if(path){
-				
 				// Chrome / Safari
-				if(typeof(element.style.webkitClipPath) !== "undefined"){ 
+				if(typeof(element.style.webkitClipPath) !== "undefined"){
 
 					element.style.webkitClipPath = "polygon(" + path + ")";
 
@@ -48,14 +49,27 @@
 					element.style.clipPath = "polygon(" + path + ")";
 
 				// SVG
-				} else { 
-					// Create SVG tag
-					$("body").append('<svg width="0" height="0"><clipPath id="' + clipPathID + '"><polygon points="' + path.replace(/px|%|em/g, '') + '"></polygon></clipPath></svg>');
-					// 
-					setTimeout(function () {
-						element.style.clipPath = 'url(#' + clipPathID + ')';
-					}, 0);
+				} else {
+					var $element = $(element),
+							polygon  = $element.data('polygon');
 
+					// Remove units from path
+					path = path.replace(/px|%|em/g, '')
+
+					if(polygon) {
+						polygon.attr('points', path)
+					} else {
+						var clipPathID = getUniqueID();
+						var svg = $('<svg width="0" height="0"><clipPath id="' + clipPathID + '"><polygon points="' + path + '"></polygon></clipPath></svg>')
+
+						$("body").append(svg);
+
+						$element.data('polygon', svg.find('polygon'))
+
+						setTimeout(function () {
+							element.style.clipPath = 'url(#' + clipPathID + ')';
+						}, 0);
+					}
 				}
 
 			} else {
