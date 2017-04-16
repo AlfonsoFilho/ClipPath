@@ -2,7 +2,7 @@
   "name": "clip-path",
   "version": "1.0.0",
   "description": "ClipPath",
-  "main": "clippath.js",
+  "main": "./dist/clippath.min.js",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git+https://github.com/AlfonsoFilho/ClipPath.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Alfonso Filho",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/AlfonsoFilho/ClipPath/issues"
   },
