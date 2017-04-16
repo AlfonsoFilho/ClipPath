@@ -1,4 +1,5 @@
 # ClipPath
+[![Build Status](https://travis-ci.org/AlfonsoFilho/ClipPath.svg?branch=master)](https://travis-ci.org/AlfonsoFilho/ClipPath)
 
 Cross-browser clip-path polyfill.
 
@@ -31,3 +32,4 @@ ClipPath('.target', '10px 10px, 15px 10px, 15px 15px, 10px 15px');
 
 ## To Do
 - Add support for circle, ellipse and inset;
+- Improve README;
