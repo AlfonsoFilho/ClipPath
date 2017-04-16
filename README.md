@@ -11,10 +11,22 @@ Vanilla javascript:
 ClipPath('.target', '5% 5%, 100% 0%, 100% 75%');
 ```
 
-Or with jQuery
+With jQuery:
 ```javascript
 $('.target').ClipPath('5% 5%, 100% 0%, 100% 75%');
 ```
+
+Or can use html element's attribute to set clip points:
+```html
+<!-- In the html -->
+<img id='clipped' data-clip="5% 5%, 100% 0%, 100% 75%" src="https://unsplash.it/100/100/?random" />
+```
+```javascript
+// In the javascript
+ClipPath('#clipped');
+```
+
+See [example folder](https://github.com/AlfonsoFilho/ClipPath/tree/master/example) to view more usage cases.
 
 ### API
 <pre>
