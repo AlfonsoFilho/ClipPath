@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ClipPath jQuery Example</title>
+</head>
+<body>
+  <img class="image" src="https://unsplash.it/500/300/?random" alt="Check out unsplash.it">
+  <img class="image-2" src="https://unsplash.it/500/300/?random" alt="Check out unsplash.it" data-clip="5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="./../dist/clippath.min.js"></script>
+  <script type="text/javascript">
+  
+  $(function(){
+    console.log('Applying clip-path with jQuery');
+    $('.image').ClipPath({path: '5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%'});
+    $('.image-2').ClipPath();
+  });
+
+  setTimeout(function() {
+    $('.image').ClipPath({path:'5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%'});
+    console.log('Changed after some time...');
+  }, 4000);
+  </script>
+
+</body>
+</html>

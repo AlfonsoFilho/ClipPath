@@ -1,0 +1,35 @@
+{
+  "name": "clip-path",
+  "version": "1.0.0",
+  "description": "ClipPath",
+  "main": "clippath.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "gulp",
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfonsoFilho/ClipPath.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlfonsoFilho/ClipPath/issues"
+  },
+  "homepage": "https://github.com/AlfonsoFilho/ClipPath#readme",
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "gulp": "3.9.1",
+    "gulp-rename": "1.2.2",
+    "gulp-size": "2.1.0",
+    "gulp-uglify": "2.1.2",
+    "jest": "19.0.2",
+    "rimraf": "2.6.1",
+    "through2": "2.0.3"
+  },
+  "engines": {
+    "node": ">=6.9"
+  }
+}
