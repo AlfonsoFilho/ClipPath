@@ -41,7 +41,32 @@ e.g.:
 ClipPath('.target', '10px 10px, 15px 10px, 15px 15px, 10px 15px');
 ```
 
+## Test and Build
+
+Clone the project and install dependencies:
+```sh
+$ git clone git@github.com:AlfonsoFilho/ClipPath.git
+$ cd ClipPath && npm install
+```
+
+To test:
+```sh
+$ npm test
+```
+
+To test and watch file changes
+```sh
+$ npm run test:watch
+```
+
+To Build:
+```sh
+$ npm start
+```
+or
+```sh
+$ npm run build
+```
 
 ## To Do
 - Add support for circle, ellipse and inset;
-- Improve README;
