@@ -15,6 +15,13 @@ With jQuery:
 ```javascript
 $('.target').ClipPath('5% 5%, 100% 0%, 100% 75%');
 ```
+> NOTE: for backward compatibility reasons, jquery implementation also accepts an object as an argument. In this case, a path property is expected. This alternative should be avoided since it is deprecated.
+
+```javascript
+// Using object instead string
+// @deprecated 
+$('.image').ClipPath({path: '5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%'}); 
+```
 
 Or can use html element's attribute to set clip points:
 ```html

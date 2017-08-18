@@ -1,6 +1,11 @@
 {
   "name": "clip-path",
   "version": "1.0.0",
+  "keywords": [
+    "jquery",
+    "polyfill",
+    "clip-path"
+  ],
   "description": "ClipPath",
   "main": "./dist/clippath.min.js",
   "scripts": {
@@ -20,12 +25,12 @@
   },
   "homepage": "https://github.com/AlfonsoFilho/ClipPath#readme",
   "devDependencies": {
-    "eslint": "3.19.0",
+    "eslint": "4.4.1",
     "gulp": "3.9.1",
     "gulp-rename": "1.2.2",
     "gulp-size": "2.1.0",
-    "gulp-uglify": "2.1.2",
-    "jest": "19.0.2",
+    "gulp-uglify": "3.0.0",
+    "jest": "20.0.4",
     "rimraf": "2.6.1",
     "through2": "2.0.3"
   },

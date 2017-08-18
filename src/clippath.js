@@ -113,11 +113,16 @@ ClipPath.applyClipPath = applyClipPath;
 
 if(typeof jQuery !== 'undefined') {
   (function($, _ClipPath){
-    $.fn.ClipPath = function(options) {
+    $.fn.ClipPath = function(pathStr) {
+
+      // pathStr can be an object due backward compatibility
+      // but pathStr must be a string
+      if(pathStr === Object(pathStr) && pathStr.path) {
+        pathStr = pathStr.path;
+      }
 
       return this.each(function() {
-        var path = $(this).attr('data-clip') || (options && options.path);
-        _ClipPath.applyClipPath(this, path);
+        _ClipPath.applyClipPath(this, $(this).attr('data-clip') || pathStr);
       });
 
     };
