@@ -1,9 +1,20 @@
 # ClipPath
 [![Build Status](https://travis-ci.org/AlfonsoFilho/ClipPath.svg?branch=master)](https://travis-ci.org/AlfonsoFilho/ClipPath)
+[![npm version](https://badge.fury.io/js/clip-path.svg)](https://badge.fury.io/js/clip-path)
 
 Cross-browser clip-path polyfill.
 
 > NOTE: currently only supports polygon values.
+
+## Installing
+with npm:
+```shell
+$ npm install clip-path --save
+```
+with yarn:
+```shell
+$ yarn add clip-path
+```
 
 ## Usage
 Vanilla javascript:
@@ -11,11 +22,11 @@ Vanilla javascript:
 ClipPath('.target', '5% 5%, 100% 0%, 100% 75%');
 ```
 
-With jQuery:
+with jQuery:
 ```javascript
 $('.target').ClipPath('5% 5%, 100% 0%, 100% 75%');
 ```
-> NOTE: for backward compatibility reasons, jquery implementation also accepts an object as an argument. In this case, a path property is expected. This alternative should be avoided since it is deprecated.
+> NOTE: for backward compatibility reasons, jquery implementation also accepts an object as an argument. In this case, a path property is expected. This alternative should be avoided since it is deprecated. (See also [#4](https://github.com/AlfonsoFilho/ClipPath/issues/4))
 
 ```javascript
 // Using object instead string
