@@ -8,11 +8,11 @@ function getUniqueID() {
 }
 
 /**
-* Checks if css property clip-path supports 'polygon()' attribute
-* @return {Boolean} Return TRUE if browser has support
-*/
+ * Checks if css property clip-path supports 'polygon()' attribute
+ * @return {Boolean} Return TRUE if browser has support
+ */
 var hasSupportToPolygon = (function () {
-  
+
   var testEl    = document.createElement('div');
   var propValue = 'polygon(0 0, 0 0, 0 0, 0 0)';
 
@@ -23,8 +23,8 @@ var hasSupportToPolygon = (function () {
 })();
 
 /**
-* Use SVG polygon
-*/
+ * Use SVG polygon
+ */
 function SVGPolyfill(element, pathPoints) {
 
   // Remove units from path
@@ -61,8 +61,8 @@ function SVGPolyfill(element, pathPoints) {
 }
 
 /**
-* Apply clip path
-*/
+ * Apply clip path
+ */
 function applyClipPath(element, pathPoints, _supportPolygon) {
 
   _supportPolygon = typeof _supportPolygon !== 'undefined' ? _supportPolygon : hasSupportToPolygon;
@@ -71,21 +71,21 @@ function applyClipPath(element, pathPoints, _supportPolygon) {
   if(typeof(element.style.webkitClipPath) !== 'undefined'){
 
     element.style.webkitClipPath = 'polygon(' + pathPoints + ')';
-  
-  // Unprefixed support
+
+    // Unprefixed support
   } else if(_supportPolygon){
 
     element.style.clipPath = 'polygon(' + pathPoints + ')';
-  
-  // SVG
+
+    // SVG
   } else {
     SVGPolyfill(element, pathPoints);
   }
 }
 
 /**
-* Main function
-*/
+ * Main function
+ */
 function ClipPath(selector, pathPoints, supportPolygon) {
 
   if(!selector) {
@@ -94,13 +94,13 @@ function ClipPath(selector, pathPoints, supportPolygon) {
   }
 
   var nodeList = document.querySelectorAll(selector || '');
-  
+
   Array.prototype.forEach.call(nodeList, function(element) {
 
-    pathPoints = pathPoints || element.getAttribute('data-clip');
+    var elementPathPoints = element.getAttribute('data-clip') || pathPoints;
 
-    if(pathPoints) {
-      applyClipPath(element, pathPoints, supportPolygon);
+    if(elementPathPoints) {
+      applyClipPath(element, elementPathPoints, supportPolygon);
     } else {
       console.error('Missing clip-path parameters. Please check ClipPath() arguments or data-clip attribute.', element);
     }
