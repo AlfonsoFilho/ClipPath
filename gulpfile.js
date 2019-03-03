@@ -38,7 +38,7 @@ const wrapUmd = () => through2.obj(function(file, enc, cb){
 gulp.task('js', ['clean'], () => {
   gulp.src('./src/*.js')
     .pipe(wrapUmd())
-    .pipe(uglify())
+    .pipe(uglify().on('error', console.error))
     .pipe(size({
       gzip: true,
       showFiles: true
@@ -46,7 +46,8 @@ gulp.task('js', ['clean'], () => {
     .pipe(rename({
       extname: '.min.js'
     }))
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest('./example/js/dist'));
 });
 
 gulp.task('default', ['clean', 'js']);
