@@ -25,14 +25,14 @@
   },
   "homepage": "https://github.com/AlfonsoFilho/ClipPath#readme",
   "devDependencies": {
-    "eslint": "4.4.1",
-    "gulp": "3.9.1",
-    "gulp-rename": "1.2.2",
-    "gulp-size": "2.1.0",
-    "gulp-uglify": "3.0.0",
-    "jest": "20.0.4",
-    "rimraf": "2.6.1",
-    "through2": "2.0.3"
+    "eslint": "5.15.0",
+    "gulp": "4.0.0",
+    "gulp-rename": "1.4.0",
+    "gulp-size": "3.0.0",
+    "gulp-uglify": "3.0.2",
+    "jest": "24.1.0",
+    "rimraf": "2.6.3",
+    "through2": "3.0.1"
   },
   "engines": {
     "node": ">=6.9"
