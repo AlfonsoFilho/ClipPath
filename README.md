@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/AlfonsoFilho/ClipPath.svg?branch=master)](https://travis-ci.org/AlfonsoFilho/ClipPath)
 [![npm version](https://badge.fury.io/js/clip-path.svg)](https://badge.fury.io/js/clip-path)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 Cross-browser clip-path polyfill.
 
