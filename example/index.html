@@ -7,17 +7,56 @@
   <title>ClipPath example</title>
 </head>
 <body>
-  <img class="image" src="https://unsplash.it/500/300/?random" alt="Check out unsplash.it">
-  <img class="image-2" src="https://unsplash.it/500/300/?random" alt="Check out unsplash.it" data-clip="5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%">
-  <script src="./../dist/clippath.min.js"></script>
+  <h3 style="text-align: center">
+    Chrome and Firefox examples, %
+  </h3>
+  <img class="image" src="./1.jpeg" alt="Demo">
+  <img class="image-2" src="./1.jpeg" alt="Demo" data-clip="5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%">
+
+  <h3 style="text-align: center">
+    Chrome and Firefox examples, px
+  </h3>
+  <img class="image-px" src="./1.jpeg" alt="Demo">
+  <img class="image-px-2" src="./1.jpeg" alt="Demo" data-clip="238px 115px,490px 272px,501px 1px,1px 0px,0px 289px">
+
+  <h3 style="text-align: center">
+    Edge example, %
+  </h3>
+
+  <div style="width: 500px; height: 300px; display: inline-block;">
+    <img class="image" src="./1.jpeg" alt="Demo">
+  </div>
+
+  <div style="width: 500px; height: 300px; display: inline-block;">
+    <img class="image-2" src="./1.jpeg" alt="Demo" data-clip="5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%">
+  </div>
+
+
+  <h3 style="text-align: center">
+    Edge example, px
+  </h3>
+
+  <div style="width: 500px; height: 300px; display: inline-block;">
+    <img class="image-px" src="./1.jpeg" alt="Demo">
+  </div>
+
+  <div style="width: 500px; height: 300px; display: inline-block;">
+    <img class="image-px-2" src="./1.jpeg" alt="Demo" data-clip="238px 115px,490px 272px,501px 1px,1px 0px,0px 289px">
+  </div>
+
+
+  <script src="./js/dist/clippath.min.js"></script>
   <script type="text/javascript">
 
   console.log('Applying clip-path with jQuery');
   ClipPath('.image', '5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%');
   ClipPath('.image-2');
+  ClipPath('.image-px', '238px 115px,490px 272px,501px 1px,1px 0px,0px 289px');
+  ClipPath('.image-px-2');
 
   setTimeout(function() {
     ClipPath('.image', '5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%');
+    ClipPath('.image-px', '250px 284px,490px 272px,497px -1px,1px 0px,170px 173px');
     console.log('Changed after some time...');
   }, 4000);
   </script>
