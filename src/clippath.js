@@ -1,208 +1,228 @@
+/* global define */
 
-/**
- * Generate an unique identifier
- * @return {String}
- */
-function getUniqueID() {
-	return 'clip-path-' + Math.random().toString(36).substring(7);
-}
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(['exports'], factory)
+  } else if (typeof exports === 'object') {
+    factory(exports)
+  } else {
+    factory(root)
+  }
+})(window || global, function (global) {
+  /**
+   * Generate an unique identifier
+   * @return {String}
+   */
+  const getUniqueID = () => 'clip-path-' + Math.random().toString(36).substring(7)
 
-/**
- * Checks if css property clip-path supports 'polygon()' attribute
- * @return {Boolean} Return TRUE if browser has support
- */
-var hasSupportToPolygon = (function () {
+  /**
+   * Checks if css property clip-path supports 'polygon()' attribute
+   * @return {Boolean} Return TRUE if browser has support
+   */
+  const hasSupportToPolygon = (function () {
+    const testEl = document.createElement('div')
+    const propValue = 'polygon(0 0, 0 0, 0 0, 0 0)'
 
-	var testEl    = document.createElement('div');
-	var propValue = 'polygon(0 0, 0 0, 0 0, 0 0)';
+    testEl.style.clipPath = propValue
 
-	testEl.style.clipPath = propValue;
+    return testEl.style.clipPath === propValue
+  })()
 
-	return testEl.style.clipPath === propValue;
+  /**
+   * Remove units from path points
+   * @param {string} pathPoints
+   */
+  const removeUnits = (pathPoints) => {
+    let finishedPathPoints = ''
+    let arrayPathPoints = pathPoints.split(', ')
 
-})();
+    for (let i = 0; i < arrayPathPoints.length; i++) {
+      const item = arrayPathPoints[i]
+      const arrayPathPoint = item.split(' ')
+      let lN = Number(arrayPathPoint[0])
+      let rN = Number(arrayPathPoint[1])
 
-/**
- * Use SVG polygon
- */
-function SVGPolyfill(element, pathPoints, edge) {
+      if (lN !== 0) {
+        lN = lN / 100
+      }
+      if (rN !== 0) {
+        rN = rN / 100
+      }
 
-	var units = 'px';
-	var svgUnits = 'userSpaceOnUse';
-	if(pathPoints.indexOf('%') !== -1){
-		units = '%';
-		svgUnits = 'objectBoundingBox';
-	}
-	pathPoints = pathPoints.replace(/px|em|%/g, '');
+      finishedPathPoints += lN + ' ' + rN
 
-	// Remove units from path
-	if(units !== 'px'){
-		var finishedPathPoints = '';
-		var arrayPathPoints = pathPoints.split(', ');
-		for (var i = 0; i < arrayPathPoints.length; i++)
-		{
-			var item = arrayPathPoints[i];
-			var arrayPathPoint = item.split(' ');
-			var lN = Number(arrayPathPoint[0]), rN = Number(arrayPathPoint[1]);
-			if(lN !== 0){
-				lN = (lN/100);
-			}
-			if(rN !== 0){
-				rN = (rN/100);
-			}
-			finishedPathPoints += lN+' '+rN;
-			if(i < (arrayPathPoints.length - 1)){
-				finishedPathPoints += ', ';
-			}
-		}
-		pathPoints = finishedPathPoints;
-	}
+      if (i < arrayPathPoints.length - 1) {
+        finishedPathPoints += ', '
+      }
+    }
 
+    pathPoints = finishedPathPoints
+  }
 
+  /**
+   * Use SVG polygon
+   */
+  function SVGPolyfill(element, pathPoints, edge) {
+    const svgNamespace = 'http://www.w3.org/2000/svg'
 
-	var elClipPathId = element.getAttribute('data-clip-path-id');
-	if(elClipPathId) {
-		var actualClipPath = document.getElementById(elClipPathId);
-		actualClipPath.setAttribute('clipPathUnits', svgUnits);
-		var actualPolygon = document.querySelector('#' + elClipPathId + ' > polygon');
-		actualPolygon.setAttribute('points', pathPoints);
-	} else {
-		var clipPathID = getUniqueID();
+    let clipPath
+    let units = 'px'
+    let svgUnits = 'userSpaceOnUse'
 
-		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-		svg.setAttribute('width', '0');
-		svg.setAttribute('height', '0');
-		svg.setAttribute('data-clip-path-id', clipPathID);
-		svg.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    if (pathPoints.indexOf('%') !== -1) {
+      units = '%'
+      svgUnits = 'objectBoundingBox'
+    }
 
-		if(edge){
-			if(element.getAttribute('class')){
-				svg.setAttribute('class', element.getAttribute('class'));
-			}
-			element.setAttribute('class', '');
-			element.style.width = "100%";
-			element.style.height = "100%";
-			svg.style.width = "100%";
-			svg.style.height = "100%";
+    pathPoints = pathPoints.replace(/px|em|%/g, '')
 
-			var defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    // Remove units from path
+    if (units !== 'px') {
+      pathPoints = removeUnits(pathPoints)
+    }
 
-			var clipPath = document.createElementNS('http://www.w3.org/2000/svg', 'clipPath');
-			clipPath.setAttribute('id', clipPathID);
-			clipPath.setAttribute('clipPathUnits', svgUnits);
+    const elClipPathId = element.getAttribute('data-clip-path-id')
 
-			var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-			polygon.setAttribute('points', pathPoints);
+    if (elClipPathId) {
+      const actualClipPath = document.getElementById(elClipPathId)
+      actualClipPath.setAttribute('clipPathUnits', svgUnits)
+      const actualPolygon = document.querySelector(`#${elClipPathId} > polygon`)
+      actualPolygon.setAttribute('points', pathPoints)
+    } else {
+      const clipPathID = getUniqueID()
 
-			var foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-			foreignObject.setAttribute('clip-path', 'url(#'+clipPathID+')');
-			foreignObject.setAttribute('width', '100%');
-			foreignObject.setAttribute('height', '100%');
+      const svg = document.createElementNS(svgNamespace, 'svg')
+      svg.setAttribute('width', '0')
+      svg.setAttribute('height', '0')
+      svg.setAttribute('data-clip-path-id', clipPathID)
+      svg.setAttributeNS(
+        'http://www.w3.org/2000/xmlns/',
+        'xmlns:xlink',
+        'http://www.w3.org/1999/xlink'
+      )
 
-			foreignObject.appendChild(element.cloneNode(true));
-			svg.appendChild(foreignObject);
+      if (edge) {
+        console.log('EDGE>>>')
+        if (element.getAttribute('class')) {
+          svg.setAttribute('class', element.getAttribute('class'))
+        }
+        element.setAttribute('class', '')
+        element.style.width = '100%'
+        element.style.height = '100%'
+        svg.style.width = '100%'
+        svg.style.height = '100%'
 
-			clipPath.appendChild(polygon);
-			defs.appendChild(clipPath);
-			svg.appendChild(defs);
+        const defs = document.createElementNS(svgNamespace, 'defs')
 
-			element.parentNode.replaceChild(svg, element);
-		}else{
-			var clipPath = document.createElementNS('http://www.w3.org/2000/svg', 'clipPath');
-			clipPath.setAttribute('id', clipPathID);
+        clipPath = document.createElementNS(
+          svgNamespace,
+          'clipPath'
+        )
+        clipPath.setAttribute('id', clipPathID)
+        clipPath.setAttribute('clipPathUnits', svgUnits)
 
-			clipPath.setAttribute('clipPathUnits', svgUnits);
+        const polygon = document.createElementNS(
+          svgNamespace,
+          'polygon'
+        )
+        polygon.setAttribute('points', pathPoints)
 
-			var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-			polygon.setAttribute('points', pathPoints);
+        const foreignObject = document.createElementNS(
+          svgNamespace,
+          'foreignObject'
+        )
+        foreignObject.setAttribute('clip-path', 'url(#' + clipPathID + ')')
+        foreignObject.setAttribute('width', '100%')
+        foreignObject.setAttribute('height', '100%')
 
-			clipPath.appendChild(polygon);
-			svg.appendChild(clipPath);
-			document.body.appendChild(svg);
-			element.setAttribute('data-clip-path-id', clipPathID);
+        foreignObject.appendChild(element.cloneNode(true))
+        svg.appendChild(foreignObject)
 
-			setTimeout(function () {
-				element.style.clipPath = 'url(#' + clipPathID + ')';
-			}, 0);
-		}
-	}
-}
+        clipPath.appendChild(polygon)
+        defs.appendChild(clipPath)
+        svg.appendChild(defs)
 
-/**
- * Apply clip path
- */
-function applyClipPath(element, pathPoints, _supportPolygon) {
+        element.parentNode.replaceChild(svg, element)
+      } else {
+        clipPath = document.createElementNS(
+          svgNamespace,
+          'clipPath'
+        )
+        clipPath.setAttribute('id', clipPathID)
+        clipPath.setAttribute('clipPathUnits', svgUnits)
 
-	_supportPolygon = typeof _supportPolygon !== 'undefined' ? _supportPolygon : hasSupportToPolygon;
+        const polygon = document.createElementNS(
+          svgNamespace,
+          'polygon'
+        )
+        polygon.setAttribute('points', pathPoints)
 
-	// Chrome / Safari
-	if(typeof(element.style.webkitClipPath) !== 'undefined'){
+        clipPath.appendChild(polygon)
+        svg.appendChild(clipPath)
+        document.body.appendChild(svg)
+        element.setAttribute('data-clip-path-id', clipPathID)
 
-		element.style.webkitClipPath = 'polygon(' + pathPoints + ')';
+        setTimeout(function () {
+          element.style.clipPath = 'url(#' + clipPathID + ')'
+        }, 0)
+      }
+    }
+  }
 
-		// Unprefixed support
-	} else if(_supportPolygon){
+  /**
+   * Apply clip path
+   */
+  function applyClipPath(element, pathPoints, supportPolygon, userAgent) {
+    // Chrome / Safari
+    if (typeof element.style.webkitClipPath !== 'undefined') {
+      element.style.webkitClipPath = 'polygon(' + pathPoints + ')'
 
-		element.style.clipPath = 'polygon(' + pathPoints + ')';
+      // Unprefixed support
+    } else if (supportPolygon) {
+      element.style.clipPath = 'polygon(' + pathPoints + ')'
 
-		// SVG
-	} else {
-		//Edge
-		if(window.navigator.userAgent.indexOf("Edge") > -1){
+      // SVG
+    } else {
+      const isEdge = userAgent.indexOf('Edge') > -1
+      console.log('is edfe', isEdge, userAgent)
+      SVGPolyfill(element, pathPoints, isEdge)
+    }
+  }
 
-			SVGPolyfill(element, pathPoints, true);
+  /**
+   * Vanilla API
+   */
+  function ClipPath(selector, pathPoints, {
+    _supportPolygon = hasSupportToPolygon,
+    _applyClipPath = applyClipPath,
+    _userAgent = window.navigator.userAgent
+  } = {}) {
+    document.querySelectorAll(selector).forEach((element) => {
+      const elementPathPoints = element.getAttribute('data-clip') || pathPoints
+      if (elementPathPoints) {
+        _applyClipPath(element, elementPathPoints, _supportPolygon, _userAgent)
+      }
+    })
+  }
 
-			//Other
-		}else{
-			SVGPolyfill(element, pathPoints);
-		}
-	}
-}
+  /**
+   * jQuery API
+   */
+  if (typeof jQuery !== 'undefined') {
+    (function ($, _applyClipPath) {
+      $.fn.ClipPath = function (pathStr) {
+        // pathStr can be an object due backward compatibility
+        // but pathStr must be a string
+        if (pathStr === Object(pathStr) && pathStr.path) {
+          pathStr = pathStr.path
+        }
 
-/**
- * Main function
- */
-function ClipPath(selector, pathPoints, supportPolygon) {
+        return this.each(function () {
+          _applyClipPath(this, $(this).attr('data-clip') || pathStr)
+        })
+      }
+    })(global.jQuery, applyClipPath)
+  }
 
-	if(!selector) {
-		console.error('Missing selector');
-		return false;
-	}
-
-	var nodeList = document.querySelectorAll(selector || '');
-
-	Array.prototype.forEach.call(nodeList, function(element) {
-
-		var elementPathPoints = element.getAttribute('data-clip') || pathPoints;
-
-		if(elementPathPoints) {
-			applyClipPath(element, elementPathPoints, supportPolygon);
-		} else {
-			console.error('Missing clip-path parameters. Please check ClipPath() arguments or data-clip attribute.', element);
-		}
-
-	});
-
-}
-
-ClipPath.applyClipPath = applyClipPath;
-
-if(typeof jQuery !== 'undefined') {
-	(function($, _ClipPath){
-		$.fn.ClipPath = function(pathStr) {
-
-			// pathStr can be an object due backward compatibility
-			// but pathStr must be a string
-			if(pathStr === Object(pathStr) && pathStr.path) {
-				pathStr = pathStr.path;
-			}
-
-			return this.each(function() {
-				_ClipPath.applyClipPath(this, $(this).attr('data-clip') || pathStr);
-			});
-
-		};
-	})(jQuery, ClipPath);
-}
-
-exports.ClipPath = ClipPath;
+  global.ClipPath = ClipPath
+})

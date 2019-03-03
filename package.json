@@ -9,10 +9,12 @@
   "description": "ClipPath",
   "main": "./dist/clippath.min.js",
   "scripts": {
-    "test": "jest",
+    "test": "standard --fix \"src/**/*.js\" | snazzy && jest",
     "test:watch": "jest --watch",
-    "build": "gulp",
-    "start": "gulp"
+    "build:babel": "babel src -d dist --ignore \"src/**/*.spec.js\"",
+    "build:uglify": "uglifyjs ./dist/clippath.js -o ./dist/clippath.min.js --compress --mangle --source-map",
+    "build": "run-s build:*",
+    "start": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -25,16 +27,17 @@
   },
   "homepage": "https://github.com/AlfonsoFilho/ClipPath#readme",
   "devDependencies": {
-    "eslint": "5.15.0",
-    "gulp": "4.0.0",
-    "gulp-rename": "1.4.0",
-    "gulp-size": "3.0.0",
-    "gulp-uglify": "3.0.2",
+    "@babel/cli": "7.2.3",
+    "@babel/core": "7.3.4",
+    "@babel/preset-env": "7.3.4",
+    "babel-jest": "24.1.0",
     "jest": "24.1.0",
-    "rimraf": "2.6.3",
-    "through2": "3.0.1"
+    "npm-run-all": "4.1.5",
+    "snazzy": "8.0.0",
+    "standard": "12.0.1",
+    "uglify-js": "3.4.9"
   },
   "engines": {
-    "node": ">=6.9"
+    "node": ">=8"
   }
 }
