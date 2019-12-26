@@ -10,7 +10,8 @@
   "main": "./dist/clippath.min.js",
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "npm run lint && jest --watch",
+    "lint": "standard --fix \"src/**/*.js\" | snazzy",
     "build": "gulp",
     "start": "gulp"
   },
@@ -25,14 +26,23 @@
   },
   "homepage": "https://github.com/AlfonsoFilho/ClipPath#readme",
   "devDependencies": {
-    "eslint": "4.4.1",
-    "gulp": "3.9.1",
-    "gulp-rename": "1.2.2",
-    "gulp-size": "2.1.0",
-    "gulp-uglify": "3.0.0",
-    "jest": "20.0.4",
-    "rimraf": "2.6.1",
-    "through2": "2.0.3"
+    "gulp": "4.0.2",
+    "gulp-rename": "2.0.0",
+    "gulp-size": "3.0.0",
+    "gulp-uglify": "3.0.2",
+    "jest": "24.9.0",
+    "rimraf": "3.0.0",
+    "snazzy": "8.0.0",
+    "standard": "14.3.1",
+    "through2": "3.0.1"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ],
+    "globals": [
+      "jQuery"
+    ]
   },
   "engines": {
     "node": ">=6.9"
